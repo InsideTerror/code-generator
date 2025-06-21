@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Activation Code Generator</title>
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
+    #code { font-size: 24px; margin: 20px 0; }
+    button { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Activation Code Generator</h1>
+  <div id="code">xxx-xxxx-xxxx</div>
+  <button onclick="generateAndSend()">Generate & Send</button>
+
+  <script>
+    function generateCode() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < 11; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return `${result.slice(0,3)}-${result.slice(3,7)}-${result.slice(7)}`;
+    }
+
+    async function generateAndSend() {
+      const code = generateCode();
+      document.getElementById('code').textContent = code;
+
+      // Replace this with your bot's webhook or API URL
+      const webhookUrl = 'https://your-bot-api.example.com/send-code';
+
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ activationCode: code })
+        });
+
+        if (!response.ok) throw new Error(`Error ${response.status}`);
+        alert('Code sent to Discord!');
+      } catch (err) {
+        console.error(err);
+        alert('Failed to send code.');
+      }
+    }
+  </script>
+</body>
+</html>
