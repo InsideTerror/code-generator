@@ -38,7 +38,7 @@
   </style>
 </head>
 <body>
-  <h1>Activation Code Generator</h1>
+  <h1>Authorised Viewer Code Generator</h1>
   <div id="code">---</div>
   <button onclick="generateAndSend()">Generate & Send</button>
   <div class="status" id="status"></div>
@@ -73,7 +73,7 @@
         });
 
         if (res.ok) {
-          document.getElementById("status").textContent = "✅ Code sent to Discord!";
+          document.getElementById("status").textContent = "✅ Code sent to Discord! DO NOT SHARE IT WITH ANYONE ELSE";
         } else {
           throw new Error("Failed with status " + res.status);
         }
