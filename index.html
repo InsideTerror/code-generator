@@ -5,17 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Activation Code Generator</title>
   <style>
-    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
-    #code { font-size: 24px; margin: 20px 0; }
-    button { padding: 10px 20px; font-size: 16px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    #code {
+      font-size: 28px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .status {
+      margin-top: 20px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <h1>Activation Code Generator</h1>
-  <div id="code">xxx-xxxx-xxxx</div>
+  <div id="code">---</div>
   <button onclick="generateAndSend()">Generate & Send</button>
+  <div class="status" id="status"></div>
 
   <script>
+    const webhookUrl = "https://discord.com/api/webhooks/1386074279011155982/qAs1bPIz1nCo5cT5f89rA7o8zVPg8KrP2sFyVBCuYGZSP2_jGRXSkVIsaqXJxAoUB4MN";  // ← Replace with your actual webhook URL
+
     function generateCode() {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       let result = '';
@@ -27,23 +57,29 @@
 
     async function generateAndSend() {
       const code = generateCode();
-      document.getElementById('code').textContent = code;
+      document.getElementById("code").textContent = code;
 
-      // Replace this with your bot's webhook or API URL
-      const webhookUrl = 'https://your-bot-api.example.com/send-code';
+      const payload = {
+        content: `🔑 New activation code: \`${code}\``,
+        username: "Utilitation 2",
+        avatar_url: "https://file.garden/Z_-mJ8vOt3F2fRcP/pexels-photo-10876557.jpg"
+      };
 
       try {
-        const response = await fetch(webhookUrl, {
+        const res = await fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ activationCode: code })
+          body: JSON.stringify(payload)
         });
 
-        if (!response.ok) throw new Error(`Error ${response.status}`);
-        alert('Code sent to Discord!');
+        if (res.ok) {
+          document.getElementById("status").textContent = "✅ Code sent to Discord!";
+        } else {
+          throw new Error("Failed with status " + res.status);
+        }
       } catch (err) {
         console.error(err);
-        alert('Failed to send code.');
+        document.getElementById("status").textContent = "❌ Failed to send code.";
       }
     }
   </script>
