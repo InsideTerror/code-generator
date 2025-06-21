@@ -23,7 +23,7 @@ function generateCode() {
 
 async function sendCodeToBotServer(code) {
   try {
-    const response = await fetch("http://your-bot-host:8080/save-code", {
+    const response = await fetch("kiwi.fps.ms:10516/save-code", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ code: code })
